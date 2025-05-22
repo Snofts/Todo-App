@@ -1,0 +1,58 @@
+@use "../index.scss" as i;
+
+.coverpage{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 2000;
+    background: linear-gradient(to bottom right, i.$color-primary-purple, i.$color-primary-blue);
+    color: i.$color-primary-white;
+
+    & p{
+        font-size: 5rem;
+        font-weight: 400;
+        width: 40%;
+        text-align: center;
+    }
+
+    &__keytext{
+        text-transform: uppercase;
+        color: i.$color-primary-black;
+        font-weight: 600;
+    }
+
+    &__btn{
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 7rem;
+        height: 2.5rem;
+        border: none;
+        border-radius: 5rem;
+        align-self: center;
+        margin-top: 2rem;
+
+        & svg{
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        &:active,
+        &:hover{
+            background-color: i.$color-primary-black;
+            color: i.$color-primary-white;
+
+            & svg{
+                fill: i.$color-primary-white;
+            }
+        }
+        
+    }
+}

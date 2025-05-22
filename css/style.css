@@ -1,0 +1,233 @@
+.animation_slideOutLeft {
+  animation: slideoutleft 1s ease-out forwards;
+}
+
+@keyframes slideoutleft {
+  from {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "poppins", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.displayOff {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.darkmode {
+  background-color: black !important;
+  color: white !important;
+}
+
+.lightdarkbg {
+  background-color: #151515 !important;
+  color: white;
+}
+
+.coverpage {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 2000;
+  background: linear-gradient(to bottom right, #c058f3, #3a7bfd);
+  color: white;
+}
+.coverpage p {
+  font-size: 5rem;
+  font-weight: 400;
+  width: 40%;
+  text-align: center;
+}
+.coverpage__keytext {
+  text-transform: uppercase;
+  color: black;
+  font-weight: 600;
+}
+.coverpage__btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 7rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: 5rem;
+  align-self: center;
+  margin-top: 2rem;
+}
+.coverpage__btn svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.coverpage__btn:active, .coverpage__btn:hover {
+  background-color: black;
+  color: white;
+}
+.coverpage__btn:active svg, .coverpage__btn:hover svg {
+  fill: white;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: minmax(min-content, 1fr) 30rem minmax(min-content, 1fr);
+  grid-template-rows: 40vh 60vh;
+}
+.app__background--img {
+  grid-column: 1/4;
+  grid-row: 1/2;
+  width: 100%;
+  height: 100%;
+}
+.app__display {
+  grid-column: 2/3;
+  grid-row: 1/3;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, 6rem) repeat(13, 3rem);
+}
+.app__display--header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+.app__display--header p {
+  color: white;
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.app__display--header svg {
+  fill: white;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.7rem;
+}
+.app__display--input {
+  grid-column: 1/2;
+  grid-row: 2/3;
+  position: relative;
+}
+.app__display--list {
+  grid-column: 1/2;
+  grid-row: 3/12;
+  background-color: white;
+  box-shadow: 1rem 1rem 5rem #c8c7c7;
+  border-radius: 1rem;
+}
+.app__note {
+  grid-column: 1/2;
+  grid-row: 12/13;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+.app__note P {
+  color: #b1b1b1;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.icon-checkcircle {
+  fill: green !important;
+}
+
+.input {
+  align-content: center;
+}
+.input__textarea {
+  width: 100%;
+  height: 60%;
+  font-size: 1.5rem;
+  color: black;
+  padding: 0.8rem 0rem 0.5rem 1rem;
+  border: none;
+  resize: none;
+  border-radius: 0.5rem;
+}
+.input svg {
+  width: 2rem;
+  height: 2rem;
+  fill: #e3e3e3;
+  position: absolute;
+  top: 1.8rem;
+  left: 27rem;
+  z-index: 100;
+  align-self: center;
+}
+.input svg:hover,
+.input svg :active {
+  fill: green;
+}
+
+.todo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 4rem;
+  border-bottom: 0.1rem solid #e3e3e3 !important;
+}
+.todo svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: #e3e3e3;
+  margin: 0rem 1rem 0rem 1rem;
+}
+
+.display__menu {
+  grid-column: 1/2;
+  grid-row: 11/12;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  z-index: 200;
+  background-color: white;
+  color: #b1b1b1 !important;
+  font-size: 0.8rem;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+.display__menu--organize {
+  display: flex;
+  flex-direction: row;
+  width: 30%;
+  justify-content: space-between;
+}
+.display__menu--itemleft p:hover, .display__menu--itemleft p:active, .display__all:hover, .display__all:active, .display__active:hover, .display__active:active, .display__completed:hover, .display__completed:active, .display__menu--clear:hover, .display__menu--clear:active {
+  color: black;
+}
+
+/*# sourceMappingURL=style.css.map */

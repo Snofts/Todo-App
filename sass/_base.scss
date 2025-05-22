@@ -1,0 +1,49 @@
+$color-primary-black: black;
+$color-primary-lightblack: #151515;
+$color-primary-shadowblack: #c8c7c7;
+$color-primary-white: white;
+$color-primary-purple: #c058f3;
+$color-primary-blue: #3a7bfd;
+$color-primary-ash: #e3e3e3;
+$color-primary-darkash: #b1b1b1;
+$color-primary-green: green;
+
+
+*,
+*::before,
+*::after{
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+
+html{
+    box-sizing: border-box;
+    // font-size: 80%; check why this should be 80% fron jonas video
+}
+
+body{
+    font-family: "poppins", sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.displayOff{
+    visibility: hidden;
+    opacity: 0;
+}
+
+.hidden{
+    display: none;
+}
+
+.darkmode{
+    background-color: $color-primary-black !important;
+    color: $color-primary-white !important;
+}
+
+.lightdarkbg{
+    background-color: $color-primary-lightblack !important;
+    color: $color-primary-white
+}

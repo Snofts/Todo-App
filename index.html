@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <title>Todo app | Frontend Mentor</title>
+
+    <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+    <!-- <style>
+      .attribution { font-size: 11px; text-align: center; }
+      .attribution a { color: hsl(228, 45%, 44%); }
+    </style> -->
+  </head>
+  <body>
+    <section class="coverpage displayOff">
+      <p>Start your day with a <span class="coverpage__keytext">plan</span></p>
+      <button class="coverpage__btn">
+        Start here
+        <svg class="icon icon-arrow-long-right">
+          <use xlink:href="images/symbol-defs.svg#icon-arrow-long-right"></use>
+        </svg>
+      </button>
+    </section>
+    <section class="app">
+      <img
+        class="app__background--img imglight"
+        src="images/bg-desktop-light.jpg"
+        alt="App background light"
+      />
+      <img
+        class="app__background--img imgdark hidden"
+        src="images/bg-desktop-dark.jpg"
+        alt="App background dark"
+      />
+      <div class="app__display">
+        <div class="app__display--header">
+          <p>To do</p>
+          <svg class="icon icon-moon">
+            <use xlink:href="images/symbol-defs.svg#icon-moon"></use>
+          </svg>
+          <svg class="icon icon-sun hidden">
+            <use xlink:href="images/symbol-defs.svg#icon-sun"></use>
+          </svg>
+        </div>
+        <div class="app__display--input input">
+          <svg class="icon icon-check">
+            <use xlink:href="images/symbol-defs.svg#icon-check"></use>
+          </svg>
+          <textarea
+            name="textarea"
+            id="app__display--input"
+            class="input__textarea"
+            placeholder="Create a todo.."
+            ></textarea>
+        </div>
+        <div class="app__display--list">
+          <div class="app__display--listitem1 todo">
+            <svg class="icon icon-circle">
+              <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
+            </svg>
+            <svg class="icon icon-checkcircle hidden">
+              <use xlink:href="images/symbol-defs.svg#icon-check-circle"></use>
+            </svg>
+            <p>Build a todo list app</p>
+          </div>
+        </div>
+        <div class="display__menu">
+          <div class="display__menu--itemleft">
+            <p>5 items left</p>
+          </div>
+          <div class="display__menu--organize">
+            <div class="display__all">All</div>
+            <div class="display__active">Active</div>
+            <div class="display__completed">Completed</div>
+          </div>
+          <div class="display__menu--clear">Clear completed</div>
+        </div>
+        <div class="app__note">
+          <p>Drag and drop to reorder list</p>
+        </div>
+      </div>
+    </section>
+
+    <script defer src="Script.js"></script>
+    <!-- Todo -->
+
+    <!-- Add dynamic number -->
+    <!-- items left All Active Completed Clear Completed Drag and drop to reorder
+    list
+
+    <div class="attribution">
+      Challenge by
+      <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
+        >Frontend Mentor</a
+      >. Coded by <a href="#">Your Name Here</a>.
+    </div> -->
+  </body>
+</html>

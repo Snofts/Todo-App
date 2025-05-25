@@ -127,6 +127,16 @@
   }
 }
 
+.nodisplay{
+  grid-column: 1 /2;
+  grid-row: 7 / 8;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: i.$color-primary-darkash;
+}
+
 .display {
   &__menu {
     grid-column: 1 /2;
@@ -157,7 +167,7 @@
   &__menu--clear{
     &:hover,
     &:active{
-        color: i.$color-primary-black;
+        color: i.$color-primary-blue;
     }
   }
 }

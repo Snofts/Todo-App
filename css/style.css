@@ -36,7 +36,7 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .darkmode {
@@ -206,6 +206,16 @@ body {
   margin: 0rem 1rem 0rem 1rem;
 }
 
+.nodisplay {
+  grid-column: 1/2;
+  grid-row: 7/8;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #b1b1b1;
+}
+
 .display__menu {
   grid-column: 1/2;
   grid-row: 11/12;
@@ -227,7 +237,7 @@ body {
   justify-content: space-between;
 }
 .display__menu--itemleft p:hover, .display__menu--itemleft p:active, .display__all:hover, .display__all:active, .display__active:hover, .display__active:active, .display__completed:hover, .display__completed:active, .display__menu--clear:hover, .display__menu--clear:active {
-  color: black;
+  color: #3a7bfd;
 }
 
 /*# sourceMappingURL=style.css.map */

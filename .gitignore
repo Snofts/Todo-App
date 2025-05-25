@@ -17,6 +17,6 @@
 /design
 /node_modules
 /README-template.md
-/timetracker
+/.timetracker
 /package-lock.json
 /style-guide.md

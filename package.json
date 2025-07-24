@@ -10,6 +10,7 @@
   "author": "Owolabi Samuel",
   "license": "ISC",
   "dependencies": {
-    "sass": "^1.89.0"
+    "sass": "^1.89.0",
+    "uuid": "^11.1.0"
   }
 }

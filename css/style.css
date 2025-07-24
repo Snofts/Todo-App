@@ -146,6 +146,7 @@ body {
   background-color: white;
   box-shadow: 1rem 1rem 5rem #c8c7c7;
   border-radius: 1rem;
+  overflow-y: auto;
 }
 .app__note {
   grid-column: 1/2;

@@ -8,6 +8,7 @@ const appBgImageDark = document.querySelector(".imgdark");
 const appBgPlain = document.querySelector(".app__background--plain");
 const appTextarea = document.querySelector(".input__textarea");
 const appList = document.querySelector(".app__display--list");
+const allAppList = document.querySelectorAll(".app__display--listitem");
 const menuDisplay = document.querySelector(".display__menu");
 const todoTxt = document.querySelector(".todo p");
 const iconCircle = document.querySelectorAll(".icon-circle");
@@ -15,11 +16,7 @@ const iconCheck = document.querySelectorAll(".icon-checkcircle");
 const iconAddTodo = document.querySelector(".icon-check");
 const coverpage = document.querySelector(".coverpage");
 const coverpageBtn = document.querySelector(".coverpage__btn");
-
-const id = crypto.randomUUID();
-console.log(id);
-
-
+const noTodo = document.querySelector(".nodisplay");
 
 ////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -48,8 +45,6 @@ class CoverPage {
 
 const cover = new CoverPage(coverpage, coverpageBtn);
 cover.startEvent();
-
-
 
 /////////////////////////////////////////////////////////////////////
 class ThemeControl {
@@ -120,68 +115,105 @@ const theme = new ThemeControl(
 theme.startEvent();
 
 
-////////////////////////////////////////////////////////////////////////
-class MarkTodo {
-  constructor(iconCircle, iconCheck, todoTxt, appList) {
-    this.iconCircle = iconCircle;
-    this.iconCheck = iconCheck;
-    this.todoTxt = todoTxt;
+///////////////////////////////////////////////////////////////////////////////
+class initialAppState{
+  todoArray = JSON.parse(localStorage.getItem('todos')) || [];
+
+  constructor(noTodo, appList){
+    this.noTodo = noTodo;
     this.appList = appList;
   }
 
-  
-  todoCompleted(todo) {
-    const circle = todo.querySelector(".icon-circle");
-    const check = todo.querySelector(".icon-checkcircle");
-
-    circle.classList.toggle("hidden");
-    check.classList.toggle("hidden");
-
-    if(check.classList.contains("hidden")) todo.style.textDecoration = "none";
-    else todo.style.textDecoration = "line-through"
+  renderNoTodo(){
+    if(this.todoArray.length === 0) {
+      this.noTodo.classList.remove('hidden')
+     }
+      else return
   }
 
+  renderPrevTodo(){
+    const appList = this.appList;
 
-  startEvent() {
-    this.appList.addEventListener("click", (e) => {
-      const todo = e.target.closest('.app__display--listitem1');
-      if (e.target.matches('svg.icon-circle') || e.target.matches("svg.icon-checkcircle")) this.todoCompleted(todo);
-      else return;
-      });
+    this.todoArray.forEach(
+      (el) => {
+        if (el.completed){
+          const html = `
+          <div class="app__display--listitem todo" id="${el.id}">
+            <svg class="icon icon-circle hidden">
+              <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
+            </svg>
+            <svg class="icon icon-checkcircle">
+              <use xlink:href="images/symbol-defs.svg#icon-check-circle"></use>
+            </svg>
+            <p>${el.todo}</p>
+          </div>
+          `;
+
+          console.log(html)
+          this.appList.insertAdjacentHTML("beforeend", html);
+          this.appList.scrollTop = this.appList.scrollHeight
+        } else {
+          const html = `
+          <div class="app__display--listitem todo" id="${el.id}">
+            <svg class="icon icon-circle">
+              <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
+            </svg>
+            <svg class="icon icon-checkcircle hidden">
+              <use xlink:href="images/symbol-defs.svg#icon-check-circle"></use>
+            </svg>
+            <p>${el.todo}</p>
+          </div>
+          `;
+
+          console.log(html)
+          this.appList.insertAdjacentHTML("beforeend", html);
+          this.appList.scrollTop = this.appList.scrollHeight
+        }
+      }
+    )
   }
+
+  startEvent(){
+    document.addEventListener("DOMContentLoaded", () => {
+      this.renderNoTodo();
+      this.renderPrevTodo();
+      console.log('content loaded')
+    })
+  }
+
 }
 
-const taskStatus = new MarkTodo(iconCircle, iconCheck, todoTxt, appList);
-taskStatus.startEvent();
+const initialState = new initialAppState(noTodo, appList);
+initialState.startEvent();
 
 
 
 ///////////////////////////////////////////////////////////////////////////////
 class CreateTodo {
-   todoArray = [];
-  //  uniqueId = nanoid()
-
-  constructor(appList, appTextarea, iconAddTodo) {
+  constructor(appList, appTextarea, iconAddTodo, initialState, noTodo) {
     this.appList = appList;
     this.appTextarea = appTextarea;
     this.iconAddTodo = iconAddTodo;
+    this.initialState = initialState;
+    this.noTodo = noTodo;
   }
 
-  // createId(){
-  //   uniqueId = `todo-${nanoid()}`
-  // }
+  createId() {
+    const uniqueId = `todo-${crypto.randomUUID()}`;
+    return uniqueId;
+  }
 
   addTodo() {
     const todoInput = this.appTextarea.value;
-    const todoSturc =  {
-      todotext: todoInput,
+    const todoSturc = {
+      todo: `${todoInput}`,
       completed: false,
-      // id: `todo-${this.uniqueId}`
-    }
+      id: this.createId(),
+    };
 
     if (todoInput !== "") {
       const html = `
-          <div class="app__display--listitem1 todo">
+          <div class="app__display--listitem todo" id="${todoSturc.id}">
             <svg class="icon icon-circle">
               <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
             </svg>
@@ -192,22 +224,85 @@ class CreateTodo {
           </div>
           `;
 
-    this.appList.insertAdjacentHTML('beforeend', html);
-    this.appTextarea.value = "";
-
-    this.todoArray.push(todoSturc);
-    console.log(this.todoArray)
+      this.noTodo.classList.add('hidden');
+      this.appList.insertAdjacentHTML("beforeend", html);
+      this.appList.scrollTop = this.appList.scrollHeight
+      this.appTextarea.value = "";
+      // console.log(todoSturc);
+      const incomingTodoArray = this.initialState.todoArray
+      incomingTodoArray.push(todoSturc);
+      localStorage.setItem('todos', JSON.stringify(this.initialState.todoArray))
+     
+     
     } else {
-      alert ('Input a task');
+      alert("Input a task");
     }
   }
 
-  startEvent(){
+  startEvent() {
     this.iconAddTodo.addEventListener("click", () => {
-        this.addTodo();
+      this.addTodo();
     });
   }
 }
 
-const newTodo = new CreateTodo(appList, appTextarea, iconAddTodo);
+const newTodo = new CreateTodo(appList, appTextarea, iconAddTodo, initialState, noTodo);
 newTodo.startEvent();
+
+////////////////////////////////////////////////////////////////////////
+class MarkTodo {
+  constructor(iconCircle, iconCheck, todoTxt, appList, newTodo, allAppList, initialState) {
+    this.iconCircle = iconCircle;
+    this.iconCheck = iconCheck;
+    this.todoTxt = todoTxt;
+    this.appList = appList;
+    this.allAppList = allAppList;
+    this.initialState = initialState;
+  }
+
+  todoCompleted(todo) {
+    const circle = todo.querySelector(".icon-circle");
+    const check = todo.querySelector(".icon-checkcircle");
+    const array = this.initialState.todoArray;
+    const allAppListArray = Array.from(
+      this.appList.querySelectorAll(".app__display--listitem")
+    );
+    const index = allAppListArray.indexOf(todo);
+
+    circle.classList.toggle("hidden");
+    check.classList.toggle("hidden");
+
+    if (check.classList.contains("hidden")) {
+      todo.style.textDecoration = "none";
+      array[index].completed = false;
+      localStorage.setItem('todos', JSON.stringify(array))
+    } else {
+      todo.style.textDecoration = "line-through";
+      array[index].completed = true;
+      localStorage.setItem('todos', JSON.stringify(array))
+    }
+  }
+
+  startEvent() {
+    this.appList.addEventListener("click", (e) => {
+      const todo = e.target.closest(".app__display--listitem");
+      if (
+        e.target.matches("svg.icon-circle") ||
+        e.target.matches("svg.icon-checkcircle")
+      )
+        this.todoCompleted(todo);
+      else return;
+    });
+  }
+}
+
+const taskStatus = new MarkTodo(
+  iconCircle,
+  iconCheck,
+  todoTxt,
+  appList,
+  newTodo,
+  allAppList,
+  initialState
+);
+taskStatus.startEvent();

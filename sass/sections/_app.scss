@@ -51,11 +51,16 @@
 
     &--list {
       grid-column: 1 / 2;
-      grid-row: 3 / 12;
+      grid-row: 3 / 11;
       background-color: i.$color-primary-white;
       box-shadow: 1rem 1rem 5rem i.$color-primary-shadowblack;
-      border-radius: 1rem;
+      border-radius: 1rem 1rem 0rem 0rem;
       overflow-y: auto;
+
+      & ::-webkit-scrollbar {
+          width: 10px;
+          height: 10px;
+        }
     }
   }
 

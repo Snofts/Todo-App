@@ -3,6 +3,7 @@
 const body = document.body;
 const iconMoon = document.querySelector(".icon-moon");
 const iconSun = document.querySelector(".icon-sun");
+const iconDelete = document.querySelector(".icon-bin");
 const appBgImageLight = document.querySelector(".imglight");
 const appBgImageDark = document.querySelector(".imgdark");
 const appBgPlain = document.querySelector(".app__background--plain");
@@ -17,6 +18,14 @@ const iconAddTodo = document.querySelector(".icon-check");
 const coverpage = document.querySelector(".coverpage");
 const coverpageBtn = document.querySelector(".coverpage__btn");
 const noTodo = document.querySelector(".nodisplay");
+const itemleft = document.querySelector(".display__menu--itemleft");
+const displayAll = document.querySelector(".display__all");
+const displayActive = document.querySelector(".display__active");
+const displayCompleted = document.querySelector(".display__completed");
+const clearCompleted = document.querySelector(".display__menu--clear");
+const deletePrompt = document.querySelector(".delete__prompt");
+const deleteAll = document.querySelector(".delete__prompt--2");
+const doNotDelete = document.querySelector(".delete__prompt--3");
 
 ////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -114,30 +123,27 @@ const theme = new ThemeControl(
 );
 theme.startEvent();
 
-
 ///////////////////////////////////////////////////////////////////////////////
-class initialAppState{
-  todoArray = JSON.parse(localStorage.getItem('todos')) || [];
+class initialAppState {
+  todoArray = JSON.parse(localStorage.getItem("todos")) || [];
 
-  constructor(noTodo, appList){
+  constructor(noTodo, appList) {
     this.noTodo = noTodo;
     this.appList = appList;
   }
 
-  renderNoTodo(){
-    if(this.todoArray.length === 0) {
-      this.noTodo.classList.remove('hidden')
-     }
-      else return
+  renderNoTodo() {
+    if (this.todoArray.length === 0) {
+      this.noTodo.classList.remove("hidden");
+      console.log("No todo items found, displaying noTodo message.");
+    } else return;
   }
 
-  renderPrevTodo(){
+  renderPrevTodo() {
     const appList = this.appList;
-
-    this.todoArray.forEach(
-      (el) => {
-        if (el.completed){
-          const html = `
+    this.todoArray.forEach((el) => {
+      if (el.completed) {
+        const html = `
           <div class="app__display--listitem todo" id="${el.id}">
             <svg class="icon icon-circle hidden">
               <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
@@ -149,11 +155,10 @@ class initialAppState{
           </div>
           `;
 
-          console.log(html)
-          this.appList.insertAdjacentHTML("beforeend", html);
-          this.appList.scrollTop = this.appList.scrollHeight
-        } else {
-          const html = `
+        this.appList.insertAdjacentHTML("beforeend", html);
+        this.appList.scrollTop = this.appList.scrollHeight;
+      } else {
+        const html = `
           <div class="app__display--listitem todo" id="${el.id}">
             <svg class="icon icon-circle">
               <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
@@ -165,28 +170,23 @@ class initialAppState{
           </div>
           `;
 
-          console.log(html)
-          this.appList.insertAdjacentHTML("beforeend", html);
-          this.appList.scrollTop = this.appList.scrollHeight
-        }
+        this.appList.insertAdjacentHTML("beforeend", html);
+        this.appList.scrollTop = this.appList.scrollHeight;
       }
-    )
+      this.appList.scrollTop = 0;
+    });
   }
 
-  startEvent(){
+  startEvent() {
     document.addEventListener("DOMContentLoaded", () => {
       this.renderNoTodo();
       this.renderPrevTodo();
-      console.log('content loaded')
-    })
+    });
   }
-
 }
 
 const initialState = new initialAppState(noTodo, appList);
 initialState.startEvent();
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 class CreateTodo {
@@ -224,16 +224,17 @@ class CreateTodo {
           </div>
           `;
 
-      this.noTodo.classList.add('hidden');
+      this.noTodo.classList.add("hidden");
       this.appList.insertAdjacentHTML("beforeend", html);
-      this.appList.scrollTop = this.appList.scrollHeight
+      this.appList.scrollTop = this.appList.scrollHeight;
       this.appTextarea.value = "";
       // console.log(todoSturc);
-      const incomingTodoArray = this.initialState.todoArray
+      const incomingTodoArray = this.initialState.todoArray;
       incomingTodoArray.push(todoSturc);
-      localStorage.setItem('todos', JSON.stringify(this.initialState.todoArray))
-     
-     
+      localStorage.setItem(
+        "todos",
+        JSON.stringify(this.initialState.todoArray)
+      );
     } else {
       alert("Input a task");
     }
@@ -246,12 +247,26 @@ class CreateTodo {
   }
 }
 
-const newTodo = new CreateTodo(appList, appTextarea, iconAddTodo, initialState, noTodo);
+const newTodo = new CreateTodo(
+  appList,
+  appTextarea,
+  iconAddTodo,
+  initialState,
+  noTodo
+);
 newTodo.startEvent();
 
 ////////////////////////////////////////////////////////////////////////
 class MarkTodo {
-  constructor(iconCircle, iconCheck, todoTxt, appList, newTodo, allAppList, initialState) {
+  constructor(
+    iconCircle,
+    iconCheck,
+    todoTxt,
+    appList,
+    newTodo,
+    allAppList,
+    initialState
+  ) {
     this.iconCircle = iconCircle;
     this.iconCheck = iconCheck;
     this.todoTxt = todoTxt;
@@ -275,11 +290,11 @@ class MarkTodo {
     if (check.classList.contains("hidden")) {
       todo.style.textDecoration = "none";
       array[index].completed = false;
-      localStorage.setItem('todos', JSON.stringify(array))
+      localStorage.setItem("todos", JSON.stringify(array));
     } else {
       todo.style.textDecoration = "line-through";
       array[index].completed = true;
-      localStorage.setItem('todos', JSON.stringify(array))
+      localStorage.setItem("todos", JSON.stringify(array));
     }
   }
 
@@ -306,3 +321,229 @@ const taskStatus = new MarkTodo(
   initialState
 );
 taskStatus.startEvent();
+
+////////////////////////////////////////////////////////////////////////
+
+class useMenu {
+  constructor(
+    itemleft,
+    displayAll,
+    displayActive,
+    displayCompleted,
+    clearCompleted,
+    iconAddTodo,
+    appTextarea,
+    iconCheck,
+    iconCircle,
+    appList
+  ) {
+    this.itemleft = itemleft;
+    this.displayActive = displayActive;
+    this.displayAll = displayAll;
+    this.displayCompleted = displayCompleted;
+    this.clearCompleted = clearCompleted;
+    this.iconAddTodo = iconAddTodo;
+    this.appTextarea = appTextarea; 
+    this.iconCheck = iconCheck;
+    this.iconCircle = iconCircle;
+    this.appList = appList;                                 
+  }
+
+  calcUncompleted() {
+    const allAppListArray = Array.from(
+      appList.querySelectorAll(".app__display--listitem")
+    );
+    const uncompleted = allAppListArray.filter((el) =>
+      el.querySelector(".icon-checkcircle").classList.contains("hidden")
+    ).length;
+
+    this.itemleft.textContent = `${uncompleted} items left`;
+  }
+
+  renderAll(){
+    // const todoArray = JSON.parse(localStorage.getItem("todos")) || [];
+    const array = Array.from(JSON.parse(localStorage.getItem("todos")))
+    if(array.length !== 0) {
+      this.appList.innerHTML = ""; // Clear the list before rendering
+      array.forEach((el) => {
+        if(!el.completed) {
+          const html = `
+          <div class="app__display--listitem todo" id="${el.id}">
+            <svg class="icon icon-circle">
+              <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
+            </svg>
+            <svg class="icon icon-checkcircle hidden">
+              <use xlink:href="images/symbol-defs.svg#icon-check-circle"></use>
+            </svg>
+            <p>${el.todo}</p>
+          </div>
+          `;
+
+          this.appList.insertAdjacentHTML("beforeend", html);
+        } else {
+          const html = `
+          <div class="app__display--listitem todo" id="${el.id}">
+            <svg class="icon icon-circle hidden">
+              <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
+            </svg>
+            <svg class="icon icon-checkcircle">
+              <use xlink:href="images/symbol-defs.svg#icon-check-circle"></use>
+            </svg>
+            <p>${el.todo}</p>
+          </div>
+          `;
+
+          this.appList.insertAdjacentHTML("beforeend", html);
+        }
+      })
+    } else return;
+  }
+
+  renderActive() {
+    const array = Array.from(JSON.parse(localStorage.getItem("todos")))
+
+    if(array.length !== 0) {
+      this.appList.innerHTML = ""; // Clear the list before rendering
+      array.forEach((el) => {
+        if(!el.completed) {
+          const html = `
+          <div class="app__display--listitem todo" id="${el.id}">
+            <svg class="icon icon-circle">
+              <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
+            </svg>
+            <svg class="icon icon-checkcircle hidden">
+              <use xlink:href="images/symbol-defs.svg#icon-check-circle"></use>
+            </svg>
+            <p>${el.todo}</p>
+          </div>
+          `;
+
+          this.appList.insertAdjacentHTML("beforeend", html);
+        } else return
+      })
+    } else return;
+  }
+
+  renderCompleted() {
+    const array = Array.from(JSON.parse(localStorage.getItem("todos")))
+
+    if(array.length !== 0) {
+      this.appList.innerHTML = ""; // Clear the list before rendering
+      array.forEach((el) => {
+        if(el.completed) {
+          const html = `
+          <div class="app__display--listitem todo" id="${el.id}">
+            <svg class="icon icon-circle hidden">
+              <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
+            </svg>
+            <svg class="icon icon-checkcircle">
+              <use xlink:href="images/symbol-defs.svg#icon-check-circle"></use>
+            </svg>
+            <p>${el.todo}</p>
+          </div>
+          `;
+
+          this.appList.insertAdjacentHTML("beforeend", html);
+        } else return
+      })
+    } else return;
+  }
+
+  removeCompleted() {
+    const array = Array.from(JSON.parse(localStorage.getItem("todos")))
+
+    if(array.length !== 0) {
+      const filteredArray = array.filter(el => !el.completed);
+      localStorage.setItem("todos", JSON.stringify(filteredArray));
+      this.appList.innerHTML = ""; // Clear the list before rendering
+      this.renderAll();
+      this.calcUncompleted();
+    } else return;
+  }
+
+  startEvent() {
+    document.addEventListener("DOMContentLoaded", () => {
+      this.calcUncompleted();
+    });
+
+    this.appList.addEventListener("click", (e) => {
+      if(e.target.classList.contains("icon-circle") || e.target.classList.contains("icon-checkcircle")){
+        this.calcUncompleted();
+        console.log("Todo completed, item left updated");
+      } else return;
+    });
+
+    this.iconAddTodo.addEventListener("click", () => {
+      this.calcUncompleted();
+    });
+
+    this.displayAll.addEventListener("click", () => {
+      this.renderAll();
+    });
+
+    this.displayActive.addEventListener("click", () => {
+      this.renderActive();
+    });
+
+    this.displayCompleted.addEventListener("click", () => {
+      this.renderCompleted();
+    });
+    
+    this.clearCompleted.addEventListener("click", () => {
+      this.removeCompleted();
+    });
+  }
+}
+
+const menu = new useMenu(
+  itemleft,
+  displayAll,
+  displayActive,
+  displayCompleted,
+  clearCompleted,
+  iconAddTodo,
+  appTextarea,
+  iconCheck,
+  iconCircle,
+  appList
+);
+menu.startEvent();
+
+////////////////////////////////////////////////////////////////////////
+
+class DeleteTodos {
+  constructor(iconDelete, deleteAll, doNotDelete, appList, initialState, deletePrompt, noTodo) {
+    this.iconDelete = iconDelete;
+    this.deleteAll = deleteAll;
+    this.doNotDelete = doNotDelete;
+    this.appList = appList;
+    this.initialState = initialState;
+    this.deletePrompt = deletePrompt;
+    this.noTodo = noTodo;
+  }
+
+  removeAllTodos() {
+    localStorage.removeItem("todos");
+    this.appList.innerHTML = ""; // Clear the list
+    this.initialState.todoArray = [];
+    this.noTodo.classList.remove("hidden");
+    this.deletePrompt.classList.add("hidden");
+  }
+
+  startEvent(){
+    this.iconDelete.addEventListener("click", () => {
+      this.deletePrompt.classList.remove("hidden");
+    })
+
+    this.deleteAll.addEventListener("click", () => {
+      this.removeAllTodos();
+    })
+
+    this.doNotDelete.addEventListener("click", () => {
+      this.deletePrompt.classList.add("hidden");
+    })
+  }
+}
+
+const deleteAllTodos = new DeleteTodos(iconDelete, deleteAll, doNotDelete, appList, initialState, deletePrompt, noTodo);
+deleteAllTodos.startEvent();

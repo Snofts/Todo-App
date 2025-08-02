@@ -24,7 +24,9 @@ const displayActive = document.querySelector(".display__active");
 const displayCompleted = document.querySelector(".display__completed");
 const clearCompleted = document.querySelector(".display__menu--clear");
 const deletePrompt = document.querySelector(".delete__prompt");
-const deletePromptContainer = document.querySelector(".delete__prompt--container");
+const deletePromptContainer = document.querySelector(
+  ".delete__prompt--container"
+);
 const deleteAll = document.querySelector(".delete__prompt--2");
 const doNotDelete = document.querySelector(".delete__prompt--3");
 
@@ -39,12 +41,12 @@ class CoverPage {
     this.body = body;
   }
 
-  contolScroll(){
-    if(!coverpage.classList.contains("displayOff")){
+  contolScroll() {
+    if (!coverpage.classList.contains("displayOff")) {
       body.style.overflowY = "hidden";
-    } else if (coverpage.classList.contains("displayOff")){
+    } else if (coverpage.classList.contains("displayOff")) {
       body.style.overflowY = "scroll";
-    };
+    }
   }
 
   slideOut() {
@@ -365,10 +367,10 @@ class useMenu {
     this.displayCompleted = displayCompleted;
     this.clearCompleted = clearCompleted;
     this.iconAddTodo = iconAddTodo;
-    this.appTextarea = appTextarea; 
+    this.appTextarea = appTextarea;
     this.iconCheck = iconCheck;
     this.iconCircle = iconCircle;
-    this.appList = appList;                                 
+    this.appList = appList;
   }
 
   calcUncompleted() {
@@ -382,13 +384,13 @@ class useMenu {
     this.itemleft.textContent = `${uncompleted} items left`;
   }
 
-  renderAll(){
+  renderAll() {
     // const todoArray = JSON.parse(localStorage.getItem("todos")) || [];
-    const array = Array.from(JSON.parse(localStorage.getItem("todos")))
-    if(array.length !== 0) {
+    const array = Array.from(JSON.parse(localStorage.getItem("todos")));
+    if (array.length !== 0) {
       this.appList.innerHTML = ""; // Clear the list before rendering
       array.forEach((el) => {
-        if(!el.completed) {
+        if (!el.completed) {
           const html = `
           <div class="app__display--listitem todo" id="${el.id}" draggable="true">
             <svg class="icon icon-circle">
@@ -417,17 +419,17 @@ class useMenu {
 
           this.appList.insertAdjacentHTML("beforeend", html);
         }
-      })
+      });
     } else return;
   }
 
   renderActive() {
-    const array = Array.from(JSON.parse(localStorage.getItem("todos")))
+    const array = Array.from(JSON.parse(localStorage.getItem("todos")));
 
-    if(array.length !== 0) {
+    if (array.length !== 0) {
       this.appList.innerHTML = ""; // Clear the list before rendering
       array.forEach((el) => {
-        if(!el.completed) {
+        if (!el.completed) {
           const html = `
           <div class="app__display--listitem todo" id="${el.id}" draggable="true">
             <svg class="icon icon-circle">
@@ -441,18 +443,18 @@ class useMenu {
           `;
 
           this.appList.insertAdjacentHTML("beforeend", html);
-        } else return
-      })
+        } else return;
+      });
     } else return;
   }
 
   renderCompleted() {
-    const array = Array.from(JSON.parse(localStorage.getItem("todos")))
+    const array = Array.from(JSON.parse(localStorage.getItem("todos")));
 
-    if(array.length !== 0) {
+    if (array.length !== 0) {
       this.appList.innerHTML = ""; // Clear the list before rendering
       array.forEach((el) => {
-        if(el.completed) {
+        if (el.completed) {
           const html = `
           <div class="app__display--listitem todo" id="${el.id}" draggable="true">
             <svg class="icon icon-circle hidden">
@@ -466,16 +468,16 @@ class useMenu {
           `;
 
           this.appList.insertAdjacentHTML("beforeend", html);
-        } else return
-      })
+        } else return;
+      });
     } else return;
   }
 
   removeCompleted() {
-    const array = Array.from(JSON.parse(localStorage.getItem("todos")))
+    const array = Array.from(JSON.parse(localStorage.getItem("todos")));
 
-    if(array.length !== 0) {
-      const filteredArray = array.filter(el => !el.completed);
+    if (array.length !== 0) {
+      const filteredArray = array.filter((el) => !el.completed);
       localStorage.setItem("todos", JSON.stringify(filteredArray));
       this.appList.innerHTML = ""; // Clear the list before rendering
       this.renderAll();
@@ -489,7 +491,10 @@ class useMenu {
     });
 
     this.appList.addEventListener("click", (e) => {
-      if(e.target.classList.contains("icon-circle") || e.target.classList.contains("icon-checkcircle")){
+      if (
+        e.target.classList.contains("icon-circle") ||
+        e.target.classList.contains("icon-checkcircle")
+      ) {
         this.calcUncompleted();
         console.log("Todo completed, item left updated");
       } else return;
@@ -510,7 +515,7 @@ class useMenu {
     this.displayCompleted.addEventListener("click", () => {
       this.renderCompleted();
     });
-    
+
     this.clearCompleted.addEventListener("click", () => {
       this.removeCompleted();
     });
@@ -534,7 +539,16 @@ menu.startEvent();
 ////////////////////////////////////////////////////////////////////////
 
 class DeleteTodos {
-  constructor(iconDelete, deleteAll, doNotDelete, appList, initialState, deletePrompt, noTodo, deletePromptContainer) {
+  constructor(
+    iconDelete,
+    deleteAll,
+    doNotDelete,
+    appList,
+    initialState,
+    deletePrompt,
+    noTodo,
+    deletePromptContainer
+  ) {
     this.iconDelete = iconDelete;
     this.deleteAll = deleteAll;
     this.doNotDelete = doNotDelete;
@@ -545,7 +559,7 @@ class DeleteTodos {
     this.deletePromptContainer = deletePromptContainer;
   }
 
-  closePopup(e){
+  closePopup(e) {
     const container = this.deletePromptContainer;
     if (!container.contains(e.target)) {
       this.deletePrompt.classList.add("hidden");
@@ -561,29 +575,36 @@ class DeleteTodos {
     this.deletePrompt.classList.add("hidden");
   }
 
-  startEvent(){
+  startEvent() {
     this.iconDelete.addEventListener("click", () => {
       this.deletePrompt.classList.remove("hidden");
-    })
+    });
 
     this.deleteAll.addEventListener("click", () => {
       this.removeAllTodos();
-    })
+    });
 
     this.doNotDelete.addEventListener("click", () => {
       this.deletePrompt.classList.add("hidden");
-    })
+    });
 
     this.deletePrompt.addEventListener("click", (e) => {
       this.closePopup(e);
-    })
+    });
   }
 }
 
-const deleteAllTodos = new DeleteTodos(iconDelete, deleteAll, doNotDelete, appList, initialState, deletePrompt, noTodo, deletePromptContainer);
+const deleteAllTodos = new DeleteTodos(
+  iconDelete,
+  deleteAll,
+  doNotDelete,
+  appList,
+  initialState,
+  deletePrompt,
+  noTodo,
+  deletePromptContainer
+);
 deleteAllTodos.startEvent();
-
-
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -606,7 +627,7 @@ deleteAllTodos.startEvent();
 //     e.preventDefault();
 //     const currentItem = e.target.closest(".app__display--listitem");
 //     if(currentItem && currentItem !== this.draggedItem){
-//       const bounding = currentItem.getBoundingClientRect(); 
+//       const bounding = currentItem.getBoundingClientRect();
 //       const offset = bounding.y + bounding.height / 2;
 //       if(e.clientY - offset > 0){
 //         currentItem.after(this.draggedItem);
@@ -695,19 +716,45 @@ class DragAndDrop {
     console.log("Drag drop working");
   }
 
-  // Touch Start
   touchStart(e) {
     const touch = e.touches[0];
     this.draggedItem = e.target.closest(".app__display--listitem");
-    this.draggedItemInitialY = touch.clientY;
+    if (!this.draggedItem) return;
+
+    // Clone the item
+    this.draggedItemClone = this.draggedItem.cloneNode(true);
+    this.draggedItemClone.style.position = "fixed";
+    this.draggedItemClone.style.pointerEvents = "none";
+    this.draggedItemClone.style.opacity = "0.7";
+    this.draggedItemClone.style.zIndex = "9999";
+    this.draggedItemClone.style.width = `${this.draggedItem.offsetWidth}px`;
+    this.draggedItemClone.style.left = `${touch.clientX}px`;
+    this.draggedItemClone.style.top = `${touch.clientY}px`;
+
+    this.dragOffsetX =
+      touch.clientX - this.draggedItem.getBoundingClientRect().left;
+    this.dragOffsetY =
+      touch.clientY - this.draggedItem.getBoundingClientRect().top;
+
+    document.body.appendChild(this.draggedItemClone);
   }
 
-  // Touch Move
   touchMove(e) {
-    e.preventDefault(); // Prevent scroll while dragging
-    const touch = e.touches[0];
-    const currentItem = document.elementFromPoint(touch.clientX, touch.clientY)?.closest(".app__display--listitem");
+    e.preventDefault(); // Prevent scrolling
 
+    const touch = e.touches[0];
+
+    // Move ghost/clone
+    if (this.draggedItemClone) {
+      this.draggedItemClone.style.left = `${
+        touch.clientX - this.dragOffsetX
+      }px`;
+      this.draggedItemClone.style.top = `${touch.clientY - this.dragOffsetY}px`;
+    }
+
+    const currentItem = document
+      .elementFromPoint(touch.clientX, touch.clientY)
+      ?.closest(".app__display--listitem");
     if (currentItem && currentItem !== this.draggedItem) {
       const bounding = currentItem.getBoundingClientRect();
       const offset = bounding.y + bounding.height / 2;
@@ -720,8 +767,11 @@ class DragAndDrop {
     }
   }
 
-  // Touch End
   touchEnd(e) {
+    if (this.draggedItemClone) {
+      document.body.removeChild(this.draggedItemClone);
+      this.draggedItemClone = null;
+    }
     this.draggedItem = null;
     this.localStoageUpdate();
   }
@@ -729,10 +779,14 @@ class DragAndDrop {
   // Update Local Storage
   localStoageUpdate() {
     const items = [...document.querySelectorAll(".app__display--listitem")];
-    const reorderedTodos = items.map(item => ({
+    const reorderedTodos = items.map((item) => ({
       todo: item.querySelector("p").textContent,
-      completed: item.querySelector("svg.icon-checkcircle").classList.contains("hidden") ? false : true,
-      id: item.id
+      completed: item
+        .querySelector("svg.icon-checkcircle")
+        .classList.contains("hidden")
+        ? false
+        : true,
+      id: item.id,
     }));
 
     localStorage.setItem("todos", JSON.stringify(reorderedTodos));

@@ -22,6 +22,17 @@
 
 html {
   box-sizing: border-box;
+  font-size: 100%;
+}
+@media only screen and (max-width: 36rem) {
+  html {
+    font-size: 70%;
+  }
+}
+@media only screen and (max-width: 23.43rem) {
+  html {
+    font-size: 60%;
+  }
 }
 
 body {

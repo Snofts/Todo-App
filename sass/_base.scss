@@ -10,6 +10,10 @@ $color-primary-darkash: #b1b1b1;
 $color-primary-green: green;
 
 
+$bp-medium: 36rem;
+$bp-small: 23.43rem;
+
+
 *,
 *::before,
 *::after{
@@ -21,7 +25,15 @@ $color-primary-green: green;
 
 html{
     box-sizing: border-box;
-    // font-size: 80%; check why this should be 80% fron jonas video
+    font-size: 100%; //check why this should be 80% fron jonas video
+
+    @media only screen and (max-width: $bp-medium){
+        font-size: 70%;
+    }
+
+    @media only screen and (max-width: $bp-small){
+        font-size: 60%;
+    }
 }
 
 body{

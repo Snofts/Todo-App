@@ -81,6 +81,16 @@ body {
   width: 40%;
   text-align: center;
 }
+@media only screen and (max-width: 64rem) {
+  .coverpage p {
+    font-size: 3rem;
+  }
+}
+@media only screen and (max-width: 23.43rem) {
+  .coverpage p {
+    width: 60%;
+  }
+}
 .coverpage__keytext {
   text-transform: uppercase;
   color: black;
@@ -96,6 +106,11 @@ body {
   border-radius: 5rem;
   align-self: center;
   margin-top: 2rem;
+}
+@media only screen and (max-width: 64rem) {
+  .coverpage__btn {
+    width: 9rem;
+  }
 }
 .coverpage__btn svg {
   width: 1.5rem;

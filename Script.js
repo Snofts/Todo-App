@@ -32,9 +32,18 @@ const doNotDelete = document.querySelector(".delete__prompt--3");
 
 // SLide out coverpage to reveal app
 class CoverPage {
-  constructor(coverpage, coverpageBtn) {
+  constructor(coverpage, coverpageBtn, body) {
     this.coverpage = coverpage;
     this.coverpageBtn = coverpageBtn;
+    this.body = body;
+  }
+
+  contolScroll(){
+    if(!coverpage.classList.contains("displayOff")){
+      body.style.overflowY = "hidden";
+    } else if (coverpage.classList.contains("displayOff")){
+      body.style.overflowY = "scroll";
+    };
   }
 
   slideOut() {
@@ -43,16 +52,21 @@ class CoverPage {
       this.coverpage.classList.add("displayOff");
       this.coverpage.classList.remove("animation_slideOutLeft");
     }, 1000);
+    body.style.overflowY = "scroll";
   }
 
   startEvent() {
     this.coverpageBtn.addEventListener("click", () => {
       this.slideOut();
     });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      this.contolScroll();
+    });
   }
 }
 
-const cover = new CoverPage(coverpage, coverpageBtn);
+const cover = new CoverPage(coverpage, coverpageBtn, body);
 cover.startEvent();
 
 /////////////////////////////////////////////////////////////////////

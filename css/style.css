@@ -128,6 +128,7 @@ body {
   display: grid;
   grid-template-columns: minmax(min-content, 1fr) 30rem minmax(min-content, 1fr);
   grid-template-rows: 40vh 60vh;
+  overflow: hidden;
 }
 .app__background--img {
   grid-column: 1/4;
@@ -144,7 +145,7 @@ body {
 }
 @media only screen and (max-width: 36rem) {
   .app__display {
-    padding-top: 8rem;
+    padding-top: 10rem;
   }
 }
 .app__display--header {
@@ -239,11 +240,6 @@ body {
   z-index: 100;
   align-self: center;
 }
-@media only screen and (max-width: 36rem) {
-  .input svg {
-    top: 1rem;
-  }
-}
 .input svg:hover,
 .input svg :active {
   fill: green;
@@ -312,6 +308,7 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgba(21, 21, 21, 0.5098039216);
+  overflow: hidden;
 }
 .delete__prompt--container {
   grid-row: 2/3;

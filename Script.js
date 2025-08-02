@@ -587,6 +587,74 @@ deleteAllTodos.startEvent();
 
 ////////////////////////////////////////////////////////////////////////
 
+// class DragAndDrop {
+//   constructor(appList, allAppList) {
+//     this.appList = appList;
+//     this.draggedItem = null;
+//     this.allAppList = allAppList;
+//   }
+
+//   dragStart(e){
+//     if(e.target.classList.contains("app__display--listitem")) {
+//       this.draggedItem = e.target;
+//       e.dataTransfer.effectAllowed = "move";
+//       console.log('Drag start working')
+//     }
+//   }
+
+//   dragOver(e){
+//     e.preventDefault();
+//     const currentItem = e.target.closest(".app__display--listitem");
+//     if(currentItem && currentItem !== this.draggedItem){
+//       const bounding = currentItem.getBoundingClientRect(); 
+//       const offset = bounding.y + bounding.height / 2;
+//       if(e.clientY - offset > 0){
+//         currentItem.after(this.draggedItem);
+//       }else {
+//         currentItem.before(this.draggedItem);
+//       }
+//       console.log('Drag over working')
+//     }
+//   }
+
+//   dropItem(e){
+//     e.preventDefault();
+//     this.draggedItem = null;
+//     this.localStoageUpdate();
+//     console.log('Drag drop working')
+//   }
+
+//   localStoageUpdate(){
+//     const items = [...document.querySelectorAll(".app__display--listitem")];
+//     console.log(items)
+//     const reorderedTodos = items.map(item => ({
+//       todo: item.querySelector('p').textContent,
+//       completed: item.querySelector('svg.icon-checkcircle').classList.contains('hidden') ? false : true,
+//       id: item.id
+//     }))
+
+//     console.log(reorderedTodos);
+//     localStorage.setItem("todos", JSON.stringify(reorderedTodos));
+//   }
+
+//   startEvent(){
+//     this.appList.addEventListener("dragstart", (e) => {
+//       this.dragStart(e);
+//     })
+
+//     this.appList.addEventListener("dragover", (e) => {
+//       this.dragOver(e);
+//     })
+
+//     this.appList.addEventListener("drop", (e) => {
+//       this.dropItem(e);
+//     })
+//   }
+// }
+
+// const dragAndDrop = new DragAndDrop(appList, allAppList);
+// dragAndDrop.startEvent();
+
 class DragAndDrop {
   constructor(appList, allAppList) {
     this.appList = appList;
@@ -594,63 +662,96 @@ class DragAndDrop {
     this.allAppList = allAppList;
   }
 
-  dragStart(e){
-    if(e.target.classList.contains("app__display--listitem")) {
+  // Mouse Drag Start
+  dragStart(e) {
+    if (e.target.classList.contains("app__display--listitem")) {
       this.draggedItem = e.target;
       e.dataTransfer.effectAllowed = "move";
-      console.log('Drag start working')
+      console.log("Drag start working");
     }
   }
 
-  dragOver(e){
+  // Mouse Drag Over
+  dragOver(e) {
     e.preventDefault();
     const currentItem = e.target.closest(".app__display--listitem");
-    if(currentItem && currentItem !== this.draggedItem){
-      const bounding = currentItem.getBoundingClientRect(); 
+    if (currentItem && currentItem !== this.draggedItem) {
+      const bounding = currentItem.getBoundingClientRect();
       const offset = bounding.y + bounding.height / 2;
-      if(e.clientY - offset > 0){
+      if (e.clientY - offset > 0) {
         currentItem.after(this.draggedItem);
-      }else {
+      } else {
         currentItem.before(this.draggedItem);
       }
-      console.log('Drag over working')
+      console.log("Drag over working");
     }
   }
 
-  dropItem(e){
+  // Mouse Drop
+  dropItem(e) {
     e.preventDefault();
     this.draggedItem = null;
     this.localStoageUpdate();
-    console.log('Drag drop working')
+    console.log("Drag drop working");
   }
 
-  localStoageUpdate(){
-    const items = [...document.querySelectorAll(".app__display--listitem")];
-    console.log(items)
-    const reorderedTodos = items.map(item => ({
-      todo: item.querySelector('p').textContent,
-      completed: item.querySelector('svg.icon-checkcircle').classList.contains('hidden') ? false : true,
-      id: item.id
-    }))
+  // Touch Start
+  touchStart(e) {
+    const touch = e.touches[0];
+    this.draggedItem = e.target.closest(".app__display--listitem");
+    this.draggedItemInitialY = touch.clientY;
+  }
 
-    console.log(reorderedTodos);
+  // Touch Move
+  touchMove(e) {
+    e.preventDefault(); // Prevent scroll while dragging
+    const touch = e.touches[0];
+    const currentItem = document.elementFromPoint(touch.clientX, touch.clientY)?.closest(".app__display--listitem");
+
+    if (currentItem && currentItem !== this.draggedItem) {
+      const bounding = currentItem.getBoundingClientRect();
+      const offset = bounding.y + bounding.height / 2;
+
+      if (touch.clientY - offset > 0) {
+        currentItem.after(this.draggedItem);
+      } else {
+        currentItem.before(this.draggedItem);
+      }
+    }
+  }
+
+  // Touch End
+  touchEnd(e) {
+    this.draggedItem = null;
+    this.localStoageUpdate();
+  }
+
+  // Update Local Storage
+  localStoageUpdate() {
+    const items = [...document.querySelectorAll(".app__display--listitem")];
+    const reorderedTodos = items.map(item => ({
+      todo: item.querySelector("p").textContent,
+      completed: item.querySelector("svg.icon-checkcircle").classList.contains("hidden") ? false : true,
+      id: item.id
+    }));
+
     localStorage.setItem("todos", JSON.stringify(reorderedTodos));
   }
 
-  startEvent(){
-    this.appList.addEventListener("dragstart", (e) => {
-      this.dragStart(e);
-    })
+  // Attach Event Listeners
+  startEvent() {
+    // Mouse Events
+    this.appList.addEventListener("dragstart", (e) => this.dragStart(e));
+    this.appList.addEventListener("dragover", (e) => this.dragOver(e));
+    this.appList.addEventListener("drop", (e) => this.dropItem(e));
 
-    this.appList.addEventListener("dragover", (e) => {
-      this.dragOver(e);
-    })
-
-    this.appList.addEventListener("drop", (e) => {
-      this.dropItem(e);
-    })
+    // Touch Events
+    this.appList.addEventListener("touchstart", (e) => this.touchStart(e));
+    this.appList.addEventListener("touchmove", (e) => this.touchMove(e));
+    this.appList.addEventListener("touchend", (e) => this.touchEnd(e));
   }
 }
 
+// Initialize
 const dragAndDrop = new DragAndDrop(appList, allAppList);
 dragAndDrop.startEvent();

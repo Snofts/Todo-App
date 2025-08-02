@@ -142,6 +142,11 @@ body {
   grid-template-columns: 1fr;
   grid-template-rows: repeat(2, 6rem) repeat(10, 3rem);
 }
+@media only screen and (max-width: 36rem) {
+  .app__display {
+    padding-top: 8rem;
+  }
+}
 .app__display--header {
   display: flex;
   align-items: end;
@@ -233,6 +238,11 @@ body {
   left: 27rem;
   z-index: 100;
   align-self: center;
+}
+@media only screen and (max-width: 36rem) {
+  .input svg {
+    top: 1rem;
+  }
 }
 .input svg:hover,
 .input svg :active {

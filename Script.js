@@ -24,6 +24,7 @@ const displayActive = document.querySelector(".display__active");
 const displayCompleted = document.querySelector(".display__completed");
 const clearCompleted = document.querySelector(".display__menu--clear");
 const deletePrompt = document.querySelector(".delete__prompt");
+const deletePromptContainer = document.querySelector(".delete__prompt--container");
 const deleteAll = document.querySelector(".delete__prompt--2");
 const doNotDelete = document.querySelector(".delete__prompt--3");
 
@@ -79,7 +80,8 @@ class ThemeControl {
     menuDisplay,
     iconSun,
     iconMoon,
-    body
+    body,
+    deletePromptContainer
   ) {
     this.appBgImageDark = appBgImageDark;
     this.appBgImageLight = appBgImageLight;
@@ -89,6 +91,7 @@ class ThemeControl {
     this.iconSun = iconSun;
     this.iconMoon = iconMoon;
     this.body = body;
+    this.deletePromptContainer = deletePromptContainer;
   }
 
   darkMode() {
@@ -101,6 +104,8 @@ class ThemeControl {
     this.appList.classList.add("lightdarkbg");
     this.appTextarea.classList.add("darkmode");
     this.menuDisplay.classList.add("lightdarkbg");
+    this.deletePromptContainer.style.backgroundColor = "black";
+    this.deletePromptContainer.style.color = "white";
   }
 
   lightMode() {
@@ -113,6 +118,8 @@ class ThemeControl {
     this.appList.style.boxShadow = "1rem 1rem 5rem #c8c7c7";
     this.appTextarea.classList.remove("darkmode");
     this.menuDisplay.classList.remove("lightdarkbg");
+    this.deletePromptContainer.style.backgroundColor = "white";
+    this.deletePromptContainer.style.color = "black";
   }
 
   startEvent() {
@@ -133,7 +140,8 @@ const theme = new ThemeControl(
   menuDisplay,
   iconSun,
   iconMoon,
-  body
+  body,
+  deletePromptContainer
 );
 theme.startEvent();
 
@@ -158,7 +166,7 @@ class initialAppState {
     this.todoArray.forEach((el) => {
       if (el.completed) {
         const html = `
-          <div class="app__display--listitem todo" id="${el.id}">
+          <div class="app__display--listitem todo" id="${el.id}" draggable="true">
             <svg class="icon icon-circle hidden">
               <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
             </svg>
@@ -173,7 +181,7 @@ class initialAppState {
         this.appList.scrollTop = this.appList.scrollHeight;
       } else {
         const html = `
-          <div class="app__display--listitem todo" id="${el.id}">
+          <div class="app__display--listitem todo" id="${el.id}" draggable="true">
             <svg class="icon icon-circle">
               <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
             </svg>
@@ -227,7 +235,7 @@ class CreateTodo {
 
     if (todoInput !== "") {
       const html = `
-          <div class="app__display--listitem todo" id="${todoSturc.id}">
+          <div class="app__display--listitem todo" id="${todoSturc.id}" draggable="true">
             <svg class="icon icon-circle">
               <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
             </svg>
@@ -382,7 +390,7 @@ class useMenu {
       array.forEach((el) => {
         if(!el.completed) {
           const html = `
-          <div class="app__display--listitem todo" id="${el.id}">
+          <div class="app__display--listitem todo" id="${el.id}" draggable="true">
             <svg class="icon icon-circle">
               <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
             </svg>
@@ -396,7 +404,7 @@ class useMenu {
           this.appList.insertAdjacentHTML("beforeend", html);
         } else {
           const html = `
-          <div class="app__display--listitem todo" id="${el.id}">
+          <div class="app__display--listitem todo" id="${el.id}" draggable="true">
             <svg class="icon icon-circle hidden">
               <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
             </svg>
@@ -421,7 +429,7 @@ class useMenu {
       array.forEach((el) => {
         if(!el.completed) {
           const html = `
-          <div class="app__display--listitem todo" id="${el.id}">
+          <div class="app__display--listitem todo" id="${el.id}" draggable="true">
             <svg class="icon icon-circle">
               <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
             </svg>
@@ -446,7 +454,7 @@ class useMenu {
       array.forEach((el) => {
         if(el.completed) {
           const html = `
-          <div class="app__display--listitem todo" id="${el.id}">
+          <div class="app__display--listitem todo" id="${el.id}" draggable="true">
             <svg class="icon icon-circle hidden">
               <use xlink:href="images/symbol-defs.svg#icon-circle"></use>
             </svg>
@@ -526,7 +534,7 @@ menu.startEvent();
 ////////////////////////////////////////////////////////////////////////
 
 class DeleteTodos {
-  constructor(iconDelete, deleteAll, doNotDelete, appList, initialState, deletePrompt, noTodo) {
+  constructor(iconDelete, deleteAll, doNotDelete, appList, initialState, deletePrompt, noTodo, deletePromptContainer) {
     this.iconDelete = iconDelete;
     this.deleteAll = deleteAll;
     this.doNotDelete = doNotDelete;
@@ -534,6 +542,15 @@ class DeleteTodos {
     this.initialState = initialState;
     this.deletePrompt = deletePrompt;
     this.noTodo = noTodo;
+    this.deletePromptContainer = deletePromptContainer;
+  }
+
+  closePopup(e){
+    const container = this.deletePromptContainer;
+    if (!container.contains(e.target)) {
+      this.deletePrompt.classList.add("hidden");
+      console.log("Delete prompt closed");
+    }
   }
 
   removeAllTodos() {
@@ -556,8 +573,84 @@ class DeleteTodos {
     this.doNotDelete.addEventListener("click", () => {
       this.deletePrompt.classList.add("hidden");
     })
+
+    this.deletePrompt.addEventListener("click", (e) => {
+      this.closePopup(e);
+    })
   }
 }
 
-const deleteAllTodos = new DeleteTodos(iconDelete, deleteAll, doNotDelete, appList, initialState, deletePrompt, noTodo);
+const deleteAllTodos = new DeleteTodos(iconDelete, deleteAll, doNotDelete, appList, initialState, deletePrompt, noTodo, deletePromptContainer);
 deleteAllTodos.startEvent();
+
+
+
+////////////////////////////////////////////////////////////////////////
+
+class DragAndDrop {
+  constructor(appList, allAppList) {
+    this.appList = appList;
+    this.draggedItem = null;
+    this.allAppList = allAppList;
+  }
+
+  dragStart(e){
+    if(e.target.classList.contains("app__display--listitem")) {
+      this.draggedItem = e.target;
+      e.dataTransfer.effectAllowed = "move";
+      console.log('Drag start working')
+    }
+  }
+
+  dragOver(e){
+    e.preventDefault();
+    const currentItem = e.target.closest(".app__display--listitem");
+    if(currentItem && currentItem !== this.draggedItem){
+      const bounding = currentItem.getBoundingClientRect(); 
+      const offset = bounding.y + bounding.height / 2;
+      if(e.clientY - offset > 0){
+        currentItem.after(this.draggedItem);
+      }else {
+        currentItem.before(this.draggedItem);
+      }
+      console.log('Drag over working')
+    }
+  }
+
+  dropItem(e){
+    e.preventDefault();
+    this.draggedItem = null;
+    this.localStoageUpdate();
+    console.log('Drag drop working')
+  }
+
+  localStoageUpdate(){
+    const items = [...document.querySelectorAll(".app__display--listitem")];
+    console.log(items)
+    const reorderedTodos = items.map(item => ({
+      todo: item.querySelector('p').textContent,
+      completed: item.querySelector('svg.icon-checkcircle').classList.contains('hidden') ? false : true,
+      id: item.id
+    }))
+
+    console.log(reorderedTodos);
+    localStorage.setItem("todos", JSON.stringify(reorderedTodos));
+  }
+
+  startEvent(){
+    this.appList.addEventListener("dragstart", (e) => {
+      this.dragStart(e);
+    })
+
+    this.appList.addEventListener("dragover", (e) => {
+      this.dragOver(e);
+    })
+
+    this.appList.addEventListener("drop", (e) => {
+      this.dropItem(e);
+    })
+  }
+}
+
+const dragAndDrop = new DragAndDrop(appList, allAppList);
+dragAndDrop.startEvent();

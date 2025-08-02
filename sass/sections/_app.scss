@@ -19,7 +19,7 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(2, 6rem) repeat(10, 3rem);
-    padding-top: 8rem;
+    // padding-top: 8rem;
 
     &--header {
       display: flex;
@@ -139,7 +139,7 @@
     height: 2rem;
     fill: i.$color-primary-ash;
     position: absolute;
-    top: 1rem;
+    top: 1.8rem; //1
     left: 27rem;
     z-index: 100;
     align-self: center;
